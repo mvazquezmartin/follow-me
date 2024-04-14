@@ -4,24 +4,47 @@
 }
 * {
   box-sizing: border-box;
+  /* border: 1px solid #ff0000; */
 }
 
 body {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column-reverse;
+  justify-content: start;
   align-items: center;
-  background-color: #555;
+  background-color: #333;
   font-family: 'Press Start 2P';
   color: #fff;
+  height: 100%;
   margin: 0;
   padding: 0;
   user-select: none;
+  @media only screen and (max-width: 480px) {
+    & {
+      flex-direction: column;
+      margin: 7px;
+      padding-top: 2rem;      
+    }
+  }
 
   .container {
     display: flex;
     flex-direction: column;
     padding: 2rem 0;
+    margin: 0 auto;
+    border-top: 10px outset #ccc;
+    border-right: 5px outset #eee;
+    border-bottom: 10px inset #ccc;
+    border-left: 5px inset #eee;
+    padding: 2rem 1.5rem;
+    background-color: #444;
+
+    @media only screen and (max-width: 480px) {
+      & {
+        width: 100%;
+        padding: 1rem;
+      }
+    }
 
     .title-container {
       width: 100%;
@@ -32,10 +55,25 @@ body {
       row-gap: 1rem;
       h1 {
         font-size: 2rem;
-        text-align: center;
-        -webkit-text-stroke-width: 0.5px;
-        -webkit-text-stroke-color: #000;
+        text-align: center;        
         margin: 0;
+        color: #fff;
+        background: #fff -webkit-linear-gradient(right, #fff 0%, #ccc 50%, #fff
+              100%);
+        background-repeat: no-repeat;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation-name: shimmer;
+        animation-duration: 6.9s;        
+        animation-iteration-count: infinite;
+        background-size: 3.125rem 100%; /*50px*/
+        transform: translate3d(0, 0, 0);
+
+        @media only screen and (max-width: 480px) {
+          & {
+            font-size: 1.7rem;
+          }
+        }
       }
       .level {
         padding-bottom: 1rem;
@@ -88,7 +126,7 @@ body {
             }
 
             .square {
-              background-color: #444;
+              background-color: #888;
               transform: rotateY(-180deg);
             }
 
@@ -119,7 +157,7 @@ body {
         padding: 10px;
         background-color: #d3d3d3;
         text-shadow: -1px -1px black, 1px 1px white;
-        color: #808080;
+        color: #aaa;
         -webkit-border-radius: 7px;
         -moz-border-radius: 7px;
         -o-border-radius: 7px;
@@ -153,4 +191,39 @@ body {
       }
     }
   }
+
+  footer {
+    display: flex;
+    justify-content: start;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    width: 100%;
+    @media only screen and (max-width: 480px) {
+      & {
+        justify-content: center;
+        padding-top: 1.2rem;
+      }
+    }
+
+    svg {
+      transition: fill 0.3s ease;
+      &:hover {
+        fill: #fff;
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -3.125rem top; /*50px*/
+	}
+	
+	50% {
+		background-position: 12.5rem top; /*200px*/
+		animation-timing-function: ease-in-out; /* Hace la transición más suave al inicio */
+	}
+	
+	100% {
+		background-position: 22.5rem top; /*200px*/
+	}
 }
