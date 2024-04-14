@@ -44,7 +44,7 @@ async function generateSequence() {
 }
 
 function checkSequence(index) {
-  console.log({ index_count, inputSequence, sequence });
+  // console.log({ index_count, inputSequence, sequence });
   if (sequence[index] === inputSequence[index]) {
     index_count++;
     if (
@@ -96,7 +96,7 @@ $squares.forEach((square, index) => {
     if (!checkSequence(index_count)) {
       square.classList.remove('active-sequence');
       square.classList.add('wrong-sequence');
-      console.log({ secuence: sequence.length });
+
       updateRecord();
 
       setTimeout(() => {
