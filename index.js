@@ -5,12 +5,39 @@ const $try_count = document.querySelector('.try');
 const $best_count = document.querySelector('.best');
 const $level_title = document.querySelector('.level');
 
+const context = new AudioContext();
 const range = [...$squares];
 const sequence = [];
 const inputSequence = [];
 let index_count = 0;
 let try_count = 0;
 let best_count = 0;
+
+const notes = [
+  248.55, // Do
+  264.32, // Do#
+  279.98, // Re
+  295.57, // Re#
+  311.14, // Mi
+  330.77, // Fa
+  349.24, // Fa#
+  370.59, // Sol
+  392.00, // Sol#
+  415.30, // La
+  440.00, // La#
+  466.16, // Si
+];
+
+function jsNota(frecuencia) {
+  const o = context.createOscillator();
+  const g = context.createGain();
+  o.connect(g);
+  o.type = 'sine';
+  o.frequency.value = frecuencia;
+  g.connect(context.destination);
+  o.start(0);
+  g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
+}
 
 function getRandomNumber() {
   return Math.floor(Math.random() * range.length);
@@ -24,11 +51,14 @@ function pushSequence() {
 async function generateSequence() {
   for (let i = 0; i < sequence.length; i++) {
     const active = sequence[i];
+    const noteFrequency = notes[active];
+
     await new Promise((resolve) => {
       setTimeout(() => {
+        jsNota(noteFrequency);
         $squares[active].classList.add('active-sequence');
         resolve();
-      }, 100);
+      }, 200);
     });
 
     await new Promise((resolve) => {
@@ -85,7 +115,7 @@ function init() {
   inputSequence.length = 0;
   index_count = 0;
   pushSequence();
-  setTimeout(() => generateSequence(), 500);
+  setTimeout(() => generateSequence(), 1000);
 }
 
 $squares.forEach((square, index) => {
@@ -93,12 +123,16 @@ $squares.forEach((square, index) => {
     square.classList.add('active-sequence');
     inputSequence.push(index);
 
+    const noteFrequency = notes[index];
+    jsNota(noteFrequency);
+
     if (!checkSequence(index_count)) {
       square.classList.remove('active-sequence');
       square.classList.add('wrong-sequence');
 
       updateRecord();
-
+      jsNota(100);
+      sequence.length = 0;
       setTimeout(() => {
         square.classList.remove('wrong-sequence');
       }, 600);
@@ -127,4 +161,5 @@ $btnAction.addEventListener('click', () => {
   $try_count.textContent = `Try: ${try_count}`;
   init();
   $btnAction.style.visibility = 'hidden';
+  jsNota(200);
 });
