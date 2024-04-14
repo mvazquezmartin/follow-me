@@ -30,17 +30,17 @@ const notes = [
   466.16, // Si
 ];
 
-function jsNota(frecuencia) {
+function jsNota(frecuencia, type = "sine") {
   const o = context.createOscillator();
   const g = context.createGain();
   o.connect(g);
-  o.type = 'sine';
+  o.type = type;
   o.frequency.value = frecuencia;
   g.connect(context.destination);
   o.start(0);
-  g.gain.value = 0.5
+  g.gain.value = 0.5;
   g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
-  return o
+  return o;
 }
 
 function getRandomNumber() {
@@ -181,5 +181,5 @@ $btnAction.addEventListener('click', () => {
   $try_count.textContent = `Try: ${try_count}`;
   init();
   $btnAction.style.visibility = 'hidden';
-  jsNota(235);
+  jsNota(235, "triangle");
 });

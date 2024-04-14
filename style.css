@@ -134,6 +134,7 @@ body {
             .square {
               background-color: #888;
               transform: rotateY(-180deg);
+              transition: background-color 0.3s ease;
             }
 
             .active-sequence {
