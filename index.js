@@ -38,7 +38,7 @@ function jsNota(frecuencia) {
   o.frequency.value = frecuencia;
   g.connect(context.destination);
   o.start(0);
-  g.gain.value = 0.4
+  g.gain.value = 0.5
   g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
   return o
 }
