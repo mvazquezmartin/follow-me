@@ -127,5 +127,4 @@ $btnAction.addEventListener('click', () => {
   $try_count.textContent = `Try: ${try_count}`;
   init();
   $btnAction.style.visibility = 'hidden';
-  $btnAction.textContent = 'RESET';
 });
