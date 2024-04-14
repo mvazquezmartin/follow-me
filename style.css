@@ -121,8 +121,14 @@ body {
               box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             }
 
+            
             .flip-square-front {
               background-color: #222;
+              transition: background-color 0.3s ease;
+            }
+
+            .front-sound{
+              background-color: #666;
             }
 
             .square {
