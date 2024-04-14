@@ -16,6 +16,7 @@ body {
   color: #fff;
   margin: 0;
   padding: 0;
+  user-select: none;
 
   .container {
     display: flex;
@@ -108,7 +109,7 @@ body {
     }
     .btn-container {
       display: flex;
-      width: 100%;
+      width: 332px;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 0.5rem;

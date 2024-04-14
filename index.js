@@ -56,7 +56,7 @@ function checkSequence(index) {
       sequence.push(newSequenceNum);
       setTimeout(() => {
         generateSequence();
-      }, 1500);
+      }, 750);
       index_count = 0;
       updateRecord();
       updateLevel();
