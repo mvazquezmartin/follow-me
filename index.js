@@ -121,7 +121,7 @@ async function welcomeSequence(sequence) {
       setTimeout(() => {
         $front_flip_squares[active].classList.add('front-sound');
         resolve();
-      }, 150);
+      }, 300);
     });
 
     await new Promise((resolve) => {
@@ -131,7 +131,7 @@ async function welcomeSequence(sequence) {
           inputSequence.length = 0;
         });
         resolve();
-      }, 150);
+      }, 300);
     });
   }
 }
