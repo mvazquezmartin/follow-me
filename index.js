@@ -7,7 +7,6 @@ const $level_title = document.querySelector('.level');
 const $front_flip_squares = document.querySelectorAll('.flip-square-front');
 
 const context = new AudioContext();
-const range = [...$squares];
 const sequence = [];
 const inputSequence = [];
 let index_count = 0;
@@ -46,7 +45,7 @@ function jsNota(frecuencia, type = 'sine') {
 }
 
 function getRandomNumber() {
-  return Math.floor(Math.random() * range.length);
+  return Math.floor(Math.random() * $squares.length);
 }
 
 function pushSequence() {
