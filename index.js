@@ -74,7 +74,7 @@ async function generateSequence() {
           inputSequence.length = 0;
         });
         resolve();
-      }, 700);
+      }, 300);
     });
   }
 }
