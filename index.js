@@ -30,7 +30,9 @@ const notes = [
   466.16, // Si
 ];
 
-function jsNota(frecuencia, type = "sine") {
+const welcome = [0, 1, 2, 5, 4, 3, 6, 7, 8];
+
+function jsNota(frecuencia, type = 'sine') {
   const o = context.createOscillator();
   const g = context.createGain();
   o.connect(g);
@@ -111,6 +113,34 @@ function updateRecord() {
   $best_count.textContent = `Best: Level ${best_count}`;
 }
 
+async function welcomeSequence(sequence) {
+  for (let i = 0; i < sequence.length; i++) {
+    const active = sequence[i];
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        $front_flip_squares[active].classList.add('front-sound');
+        resolve();
+      }, 150);
+    });
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        $front_flip_squares.forEach((square) => {
+          square.classList.remove('front-sound');
+          inputSequence.length = 0;
+        });
+        resolve();
+      }, 150);
+    });
+  }
+}
+
+function playWelcomeSequence() {
+  const welcome_sequence = welcome.slice().sort(() => Math.random() - 0.5);
+  welcomeSequence(welcome_sequence);
+}
+
 function init() {
   $squaresRotate.forEach((square) => {
     square.classList.add('rotate-square');
@@ -181,5 +211,7 @@ $btnAction.addEventListener('click', () => {
   $try_count.textContent = `Try: ${try_count}`;
   init();
   $btnAction.style.visibility = 'hidden';
-  jsNota(235, "triangle");
+  jsNota(235, 'triangle');
 });
+
+playWelcomeSequence();
