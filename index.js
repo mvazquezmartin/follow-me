@@ -9,7 +9,7 @@ const $front_flip_squares = document.querySelectorAll('.flip-square-front');
 const context = new AudioContext();
 const sequence = [];
 const inputSequence = [];
-const wrong_note = 200;
+const wrong = { note: 200, type: 'triangle' };
 const start = { note: 235, type: 'sine' };
 let index_count = 0;
 let try_count = 0;
@@ -33,12 +33,12 @@ const notes = [
 
 const welcome = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 
-function jsNote(frecuencia, type = 'sine') {
+function jsNote(frequency, type = 'sine') {
   const o = context.createOscillator();
   const g = context.createGain();
   o.connect(g);
   o.type = type;
-  o.frequency.value = frecuencia;
+  o.frequency.value = frequency;
   g.connect(context.destination);
   o.start(0);
   g.gain.value = 0.5;
@@ -48,7 +48,6 @@ function jsNote(frecuencia, type = 'sine') {
 
 function currentNote(note, type) {
   if (currentOscillator) currentOscillator.stop();
-
   const noteFrequency = note;
   currentOscillator = jsNote(noteFrequency, type);
 }
@@ -179,7 +178,7 @@ $squares.forEach((square, index) => {
     square.classList.add('active-sequence');
     inputSequence.push(index);
 
-    currentNote(notes[index])
+    currentNote(notes[index]);
 
     setTimeout(() => {
       square.classList.remove('active-sequence');
@@ -189,8 +188,7 @@ $squares.forEach((square, index) => {
       square.classList.remove('active-sequence');
       square.classList.add('wrong-sequence');
 
-      currentNote(wrong_note, 'triangle')
-
+      currentNote(wrong.note, wrong.type);
       updateRecord();
       resetValue();
 
