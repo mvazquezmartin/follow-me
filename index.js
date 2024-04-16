@@ -9,6 +9,8 @@ const $front_flip_squares = document.querySelectorAll('.flip-square-front');
 const context = new AudioContext();
 const sequence = [];
 const inputSequence = [];
+const wrong_note = 210;
+const start = { note: 230, type: 'triangle' };
 let index_count = 0;
 let try_count = 0;
 let best_count = 0;
@@ -78,38 +80,37 @@ async function generateSequence() {
   }
 }
 
-function checkSequence(index) {
-  // console.log({ index_count, inputSequence, sequence });
-  if (sequence[index] === inputSequence[index]) {
-    index_count++;
-    if (
-      sequence.every((element, index) => {
-        return element === inputSequence[index];
-      })
-    ) {
-      const newSequenceNum = getRandomNumber();
-      sequence.push(newSequenceNum);
-      setTimeout(() => {
-        generateSequence();
-      }, 750);
-      index_count = 0;
-      updateRecord();
-      updateLevel();
-    }
-    return true;
-  } else {
-    return false;
-  }
+function updateRecord() {
+  const record = sequence.length - 1;
+  if (best_count < record) best_count = record;
+  $best_count.textContent = `Best: Level ${best_count}`;
 }
 
 function updateLevel(secuence = sequence.length) {
   $level_title.textContent = `Level ${secuence}`;
 }
 
-function updateRecord() {
-  const record = sequence.length - 1;
-  if (best_count < record) best_count = record;
-  $best_count.textContent = `Best: Level ${best_count}`;
+function addANewSequence() {
+  pushSequence();
+  setTimeout(() => {
+    generateSequence();
+  }, 750);
+  updateRecord();
+  updateLevel();
+  index_count = 0;
+}
+
+function checkSequence(index) {
+  // console.log({ index_count, inputSequence, sequence });
+  if (sequence[index] === inputSequence[index]) {
+    index_count++;
+    if (sequence.length === inputSequence.length) {
+      addANewSequence();
+    }
+    return true;
+  } else {
+    return false;
+  }
 }
 
 async function welcomeSequence(sequence) {
@@ -118,15 +119,15 @@ async function welcomeSequence(sequence) {
 
     await new Promise((resolve) => {
       setTimeout(() => {
-        $front_flip_squares[active].classList.add('front-sound');
-        resolve();
+    $front_flip_squares[active].classList.add('front-active');
+    resolve();
       }, 300);
     });
 
     await new Promise((resolve) => {
       setTimeout(() => {
         $front_flip_squares.forEach((square) => {
-          square.classList.remove('front-sound');
+          square.classList.remove('front-active');
           inputSequence.length = 0;
         });
         resolve();
@@ -140,13 +141,17 @@ function playWelcomeSequence() {
   welcomeSequence(welcome_sequence);
 }
 
+function resetValue() {
+  sequence.length = 0;
+  inputSequence.length = 0;
+  index_count = 0;
+}
+
 function init() {
   $squaresRotate.forEach((square) => {
     square.classList.add('rotate-square');
   });
-  sequence.length = 0;
-  inputSequence.length = 0;
-  index_count = 0;
+  resetValue();
   pushSequence();
   setTimeout(() => generateSequence(), 1000);
 }
@@ -155,15 +160,15 @@ $front_flip_squares.forEach((square, index) => {
   square.addEventListener('click', () => {
     const noteFrequency = notes[index];
     jsNota(noteFrequency);
-    square.classList.add('front-sound');
+    square.classList.add('front-active');
     setTimeout(() => {
-      square.classList.remove('front-sound');
+      square.classList.remove('front-active');
     }, 300);
   });
 });
 
 $squares.forEach((square, index) => {
-  square.addEventListener('mousedown', () => {
+  square.addEventListener('click', () => {
     square.classList.add('active-sequence');
     inputSequence.push(index);
 
@@ -172,16 +177,20 @@ $squares.forEach((square, index) => {
     const noteFrequency = notes[index];
     currentOscillator = jsNota(noteFrequency);
 
+    setTimeout(() => {
+      square.classList.remove('active-sequence');
+    }, 250);
+
     if (!checkSequence(index_count)) {
       square.classList.remove('active-sequence');
       square.classList.add('wrong-sequence');
 
-      updateRecord();
-
       if (currentOscillator) currentOscillator.stop();
-      jsNota(210);
+      jsNota(wrong_note);
 
-      sequence.length = 0;
+      updateRecord();
+      resetValue();
+
       setTimeout(() => {
         square.classList.remove('wrong-sequence');
       }, 600);
@@ -197,20 +206,12 @@ $squares.forEach((square, index) => {
   });
 });
 
-$squares.forEach((square) => {
-  square.addEventListener('mouseup', () => {
-    setTimeout(() => {
-      square.classList.remove('active-sequence');
-    }, 100);
-  });
-});
-
 $btnAction.addEventListener('click', () => {
   try_count++;
   $try_count.textContent = `Try: ${try_count}`;
-  init();
   $btnAction.style.visibility = 'hidden';
-  jsNota(235, 'triangle');
+  jsNota(start.note, start.type);
+  init();
 });
 
 playWelcomeSequence();
