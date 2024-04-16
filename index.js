@@ -15,6 +15,8 @@ let index_count = 0;
 let try_count = 0;
 let best_count = 0;
 let currentOscillator = null;
+let welcomeInterval;
+let welcomeSequenceRunning = true;
 
 const notes = [
   248.55, // Do
@@ -121,6 +123,7 @@ function checkSequence(index) {
 
 async function welcomeSequence(sequence) {
   for (let i = 0; i < sequence.length; i++) {
+    if (!welcomeSequenceRunning) return;
     const active = sequence[i];
 
     await new Promise((resolve) => {
@@ -143,8 +146,10 @@ async function welcomeSequence(sequence) {
 }
 
 function playWelcomeSequence() {
+  welcomeSequenceRunning = true;
   const welcome_sequence = welcome.slice().sort(() => Math.random() - 0.5);
   welcomeSequence(welcome_sequence);
+  welcomeInterval = setTimeout(playWelcomeSequence, 7000);
 }
 
 function resetValue() {
@@ -154,6 +159,8 @@ function resetValue() {
 }
 
 function init() {
+  welcomeSequenceRunning = false;
+  clearTimeout(welcomeInterval);
   $squaresRotate.forEach((square) => {
     square.classList.add('rotate-square');
   });
@@ -164,6 +171,8 @@ function init() {
 
 $front_flip_squares.forEach((square, index) => {
   square.addEventListener('click', () => {
+    welcomeSequenceRunning = false;
+    clearTimeout(welcomeInterval);
     const noteFrequency = notes[index];
     currentNote(noteFrequency);
     square.classList.add('front-active');
@@ -202,7 +211,7 @@ $squares.forEach((square, index) => {
           $btnAction.style.visibility = 'visible';
           updateLevel(1);
         });
-      }, 750);
+      }, 800);
     }
   });
 });
