@@ -158,9 +158,13 @@ function resetValue() {
   index_count = 0;
 }
 
-function init() {
+function stopWelcomeSequence() {
   welcomeSequenceRunning = false;
   clearTimeout(welcomeInterval);
+}
+
+function init() {
+  stopWelcomeSequence();
   $squaresRotate.forEach((square) => {
     square.classList.add('rotate-square');
   });
@@ -171,8 +175,7 @@ function init() {
 
 $front_flip_squares.forEach((square, index) => {
   square.addEventListener('click', () => {
-    welcomeSequenceRunning = false;
-    clearTimeout(welcomeInterval);
+    stopWelcomeSequence();
     const noteFrequency = notes[index];
     currentNote(noteFrequency);
     square.classList.add('front-active');
