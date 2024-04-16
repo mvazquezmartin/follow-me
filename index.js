@@ -33,7 +33,7 @@ const notes = [
 
 const welcome = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 
-function jsNota(frecuencia, type = 'sine') {
+function jsNote(frecuencia, type = 'sine') {
   const o = context.createOscillator();
   const g = context.createGain();
   o.connect(g);
@@ -62,7 +62,7 @@ async function generateSequence() {
 
     await new Promise((resolve) => {
       setTimeout(() => {
-        jsNota(noteFrequency);
+        jsNote(noteFrequency);
         $squares[active].classList.add('active-sequence');
         resolve();
       }, 200);
@@ -119,8 +119,8 @@ async function welcomeSequence(sequence) {
 
     await new Promise((resolve) => {
       setTimeout(() => {
-    $front_flip_squares[active].classList.add('front-active');
-    resolve();
+        $front_flip_squares[active].classList.add('front-active');
+        resolve();
       }, 300);
     });
 
@@ -159,7 +159,7 @@ function init() {
 $front_flip_squares.forEach((square, index) => {
   square.addEventListener('click', () => {
     const noteFrequency = notes[index];
-    jsNota(noteFrequency);
+    jsNote(noteFrequency);
     square.classList.add('front-active');
     setTimeout(() => {
       square.classList.remove('front-active');
@@ -175,7 +175,7 @@ $squares.forEach((square, index) => {
     if (currentOscillator) currentOscillator.stop();
 
     const noteFrequency = notes[index];
-    currentOscillator = jsNota(noteFrequency);
+    currentOscillator = jsNote(noteFrequency);
 
     setTimeout(() => {
       square.classList.remove('active-sequence');
@@ -186,7 +186,7 @@ $squares.forEach((square, index) => {
       square.classList.add('wrong-sequence');
 
       if (currentOscillator) currentOscillator.stop();
-      jsNota(wrong_note);
+      jsNote(wrong_note);
 
       updateRecord();
       resetValue();
@@ -210,7 +210,7 @@ $btnAction.addEventListener('click', () => {
   try_count++;
   $try_count.textContent = `Try: ${try_count}`;
   $btnAction.style.visibility = 'hidden';
-  jsNota(start.note, start.type);
+  jsNote(start.note, start.type);
   init();
 });
 
