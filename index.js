@@ -14,9 +14,9 @@ const start = { note: 235, type: 'sine' };
 let index_count = 0;
 let try_count = 0;
 let best_count = 0;
-let currentOscillator = null;
-let welcomeInterval;
-let welcomeSequenceRunning = true;
+let current_oscillator = null;
+let welcome_interval;
+let welcome_sequence_running = true;
 
 const notes = [
   248.55, // Do
@@ -49,9 +49,9 @@ function jsNote(frequency, type = 'sine') {
 }
 
 function currentNote(note, type) {
-  if (currentOscillator) currentOscillator.stop();
+  if (current_oscillator) current_oscillator.stop();
   const noteFrequency = note;
-  currentOscillator = jsNote(noteFrequency, type);
+  current_oscillator = jsNote(noteFrequency, type);
 }
 
 function getRandomNumber() {
@@ -123,7 +123,7 @@ function checkSequence(index) {
 
 async function welcomeSequence(sequence) {
   for (let i = 0; i < sequence.length; i++) {
-    if (!welcomeSequenceRunning) return;
+    if (!welcome_sequence_running) return;
     const active = sequence[i];
 
     await new Promise((resolve) => {
@@ -146,10 +146,10 @@ async function welcomeSequence(sequence) {
 }
 
 function playWelcomeSequence() {
-  welcomeSequenceRunning = true;
+  welcome_sequence_running = true;
   const welcome_sequence = welcome.slice().sort(() => Math.random() - 0.5);
   welcomeSequence(welcome_sequence);
-  welcomeInterval = setTimeout(playWelcomeSequence, 7000);
+  welcome_interval = setTimeout(playWelcomeSequence, 7000);
 }
 
 function resetValue() {
@@ -159,8 +159,8 @@ function resetValue() {
 }
 
 function stopWelcomeSequence() {
-  welcomeSequenceRunning = false;
-  clearTimeout(welcomeInterval);
+  welcome_sequence_running = false;
+  clearTimeout(welcome_interval);
 }
 
 function init() {
