@@ -9,8 +9,8 @@ const $front_flip_squares = document.querySelectorAll('.flip-square-front');
 const context = new AudioContext();
 const sequence = [];
 const inputSequence = [];
-const wrong_note = 210;
-const start = { note: 230, type: 'triangle' };
+const wrong_note = 200;
+const start = { note: 235, type: 'sine' };
 let index_count = 0;
 let try_count = 0;
 let best_count = 0;
@@ -44,6 +44,13 @@ function jsNote(frecuencia, type = 'sine') {
   g.gain.value = 0.5;
   g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
   return o;
+}
+
+function currentNote(note, type) {
+  if (currentOscillator) currentOscillator.stop();
+
+  const noteFrequency = note;
+  currentOscillator = jsNote(noteFrequency, type);
 }
 
 function getRandomNumber() {
@@ -159,7 +166,7 @@ function init() {
 $front_flip_squares.forEach((square, index) => {
   square.addEventListener('click', () => {
     const noteFrequency = notes[index];
-    jsNote(noteFrequency);
+    currentNote(noteFrequency);
     square.classList.add('front-active');
     setTimeout(() => {
       square.classList.remove('front-active');
@@ -172,10 +179,7 @@ $squares.forEach((square, index) => {
     square.classList.add('active-sequence');
     inputSequence.push(index);
 
-    if (currentOscillator) currentOscillator.stop();
-
-    const noteFrequency = notes[index];
-    currentOscillator = jsNote(noteFrequency);
+    currentNote(notes[index])
 
     setTimeout(() => {
       square.classList.remove('active-sequence');
@@ -185,8 +189,7 @@ $squares.forEach((square, index) => {
       square.classList.remove('active-sequence');
       square.classList.add('wrong-sequence');
 
-      if (currentOscillator) currentOscillator.stop();
-      jsNote(wrong_note);
+      currentNote(wrong_note, 'triangle')
 
       updateRecord();
       resetValue();
@@ -210,7 +213,7 @@ $btnAction.addEventListener('click', () => {
   try_count++;
   $try_count.textContent = `Try: ${try_count}`;
   $btnAction.style.visibility = 'hidden';
-  jsNote(start.note, start.type);
+  currentNote(start.note, start.type);
   init();
 });
 
