@@ -220,15 +220,15 @@ body {
 
 @keyframes shimmer {
   0% {
-    background-position: -3.125rem top; /*50px*/
+    background-position: -3.125rem top; 
   }
 
   50% {
-    background-position: 12.5rem top; /*200px*/
-    animation-timing-function: ease-in-out; /* Hace la transición más suave al inicio */
+    background-position: 12.5rem top;
+    animation-timing-function: ease-in-out;
   }
 
   100% {
-    background-position: 22.5rem top; /*200px*/
+    background-position: 22.5rem top;
   }
 }
