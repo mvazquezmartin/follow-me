@@ -125,7 +125,7 @@ body {
               transition: background-color 0.3s ease;
             }
 
-            .front-sound {
+            .front-active {
               background-color: #666;
             }
 
