@@ -5,6 +5,7 @@ const $try_count = document.querySelector('.try');
 const $best_count = document.querySelector('.best');
 const $level_title = document.querySelector('.level');
 const $front_flip_squares = document.querySelectorAll('.flip-square-front');
+const localStorage = window.localStorage;
 
 const context = new AudioContext();
 const sequence = [];
@@ -12,8 +13,8 @@ const inputSequence = [];
 const wrong = { note: 200, type: 'triangle' };
 const start = { note: 235, type: 'sine' };
 let index_count = 0;
-let try_count = 0;
-let best_count = 0;
+// let try_count = 0;
+// let best_count = 0;
 let current_oscillator = null;
 let welcome_interval;
 let welcome_sequence_running = true;
@@ -46,6 +47,25 @@ function jsNote(frequency, type = 'sine') {
   g.gain.value = 0.5;
   g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
   return o;
+}
+
+function loadLocalStorage() {
+  const try_counter = localStorage.try_count;
+  const best_counter = localStorage.best_count;
+
+  console.log(try_counter);
+  if (try_counter) {
+    $try_count.textContent = `Try: ${try_counter}`;
+  } else {
+    $try_count.textContent = 'Try: 0';
+    localStorage.try_count = '0';
+  }
+
+  if (best_counter) {
+    $best_count.textContent = `Best: Level ${best_counter}`;
+  } else {
+    localStorage.best_count = '0';
+  }
 }
 
 function currentNote(note, type) {
@@ -90,8 +110,11 @@ async function generateSequence() {
 
 function updateRecord() {
   const record = sequence.length - 1;
-  if (best_count < record) best_count = record;
-  $best_count.textContent = `Best: Level ${best_count}`;
+  const bestCount = Number(localStorage.best_count);
+
+  if (bestCount < record) localStorage.best_count = record;
+
+  $best_count.textContent = `Best: Level ${localStorage.best_count}`;
 }
 
 function updateLevel(secuence = sequence.length) {
@@ -220,11 +243,13 @@ $squares.forEach((square, index) => {
 });
 
 $btnAction.addEventListener('click', () => {
-  try_count++;
-  $try_count.textContent = `Try: ${try_count}`;
+  localStorage.try_count = Number(localStorage.try_count) + 1;
+  const tryCount = localStorage.try_count;
+  $try_count.textContent = `Try: ${tryCount}`;
   $btnAction.style.visibility = 'hidden';
   currentNote(start.note, start.type);
   init();
 });
 
+loadLocalStorage();
 playWelcomeSequence();
