@@ -13,8 +13,6 @@ const inputSequence = [];
 const wrong = { note: 200, type: 'triangle' };
 const start = { note: 235, type: 'sine' };
 let index_count = 0;
-// let try_count = 0;
-// let best_count = 0;
 let current_oscillator = null;
 let welcome_interval;
 let welcome_sequence_running = true;
