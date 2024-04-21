@@ -52,8 +52,7 @@ function jsNote(frequency, type = 'sine') {
 function loadLocalStorage() {
   const try_counter = localStorage.try_count;
   const best_counter = localStorage.best_count;
-
-  console.log(try_counter);
+  
   if (try_counter) {
     $try_count.textContent = `Try: ${try_counter}`;
   } else {
