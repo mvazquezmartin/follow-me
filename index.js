@@ -128,8 +128,7 @@ function addANewSequence() {
   index_count = 0;
 }
 
-function checkSequence(index) {
-  // console.log({ index_count, inputSequence, sequence });
+function checkSequence(index) {  
   if (sequence[index] === inputSequence[index]) {
     index_count++;
     if (sequence.length === inputSequence.length) {
