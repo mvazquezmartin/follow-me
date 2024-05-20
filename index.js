@@ -32,6 +32,7 @@ const notes = [
   466.16, // Si
 ];
 
+
 const welcome = [0, 1, 2, 5, 4, 3, 6, 7, 8];
 
 function jsNote(frequency, type = 'sine') {
