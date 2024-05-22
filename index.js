@@ -166,8 +166,8 @@ async function welcomeSequence(sequence) {
 
 function playWelcomeSequence() {
   welcome_sequence_running = true;
-  const welcome = [...Array(9).keys()]
-  const welcome_sequence = welcome.slice().sort(() => Math.random() - 0.5);
+  // const welcome = [...Array(9).keys()]
+  const welcome_sequence = [...Array(9).keys()].slice().sort(() => Math.random() - 0.5);
   welcomeSequence(welcome_sequence);
   welcome_interval = setTimeout(playWelcomeSequence, 7000);
 }
