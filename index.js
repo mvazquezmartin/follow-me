@@ -32,7 +32,6 @@ const notes = [
   466.16, // Si
 ];
 
-
 function jsNote(frequency, type = 'sine') {
   const o = context.createOscillator();
   const g = context.createGain();
